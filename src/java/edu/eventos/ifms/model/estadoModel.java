@@ -16,6 +16,8 @@ public class estadoModel {
     
     @Column(nullable = false, length = 2)
     private String estadoSigla;
+    
+    public estadoModel(){}
 
     public long getIdEstado() {
         return idEstado;

@@ -1,5 +1,10 @@
 package edu.eventos.ifms.controller;
-
+/*
+import edu.eventos.ifms.model.campusModel;
+import edu.eventos.ifms.model.estadoModel;
+import edu.eventos.ifms.repository.campusRepository;
+import edu.eventos.ifms.repository.estadoRepository;
+*/
 import edu.eventos.ifms.model.campusModel;
 import edu.eventos.ifms.model.estadoModel;
 import edu.eventos.ifms.repository.campusRepository;
@@ -28,6 +33,7 @@ public class campusController {
         */
         this.campusModel =new campusModel();
         this.campusRepository = new campusRepository();
+        this.estadoRepository = new estadoRepository();
     }
     
     public void salvar(){
@@ -43,7 +49,7 @@ public class campusController {
         List<estadoModel> listaDeEstados = this.estadoRepository.buscar();
         for(estadoModel estado : listaDeEstados){
             itens.add(new SelectItem(estado.getIdEstado(), estado.getEstadoNome()));
-        }
+        }  
         return itens;
     }
     
