@@ -6,8 +6,10 @@ import edu.eventos.ifms.repository.campusRepository;
 import edu.eventos.ifms.repository.estadoRepository;
 */
 import edu.eventos.ifms.model.campusModel;
+import edu.eventos.ifms.model.cidadeModel;
 import edu.eventos.ifms.model.estadoModel;
 import edu.eventos.ifms.repository.campusRepository;
+import edu.eventos.ifms.repository.cidadeRepository;
 import edu.eventos.ifms.repository.estadoRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +20,13 @@ import javax.faces.model.SelectItem;
 @ManagedBean
 @ViewScoped
 public class campusController {
-   /* private String campusNome;
-    private int campusCidadeId;
-    private int campusEstadoId;
-    */
+
     private estadoRepository estadoRepository;
     private campusModel campusModel;
     private campusRepository campusRepository;
+    private cidadeRepository cidadeRepository;
+    private List<SelectItem> listaDeCidades;
+    //private List<campusModel> listaDeCampus;
     
     public campusController(){
     /*    this.campusNome = "";
@@ -34,14 +36,15 @@ public class campusController {
         this.campusModel =new campusModel();
         this.campusRepository = new campusRepository();
         this.estadoRepository = new estadoRepository();
+        this.cidadeRepository = new cidadeRepository();
+        this.listaDeCidades = this.getCidades(1);
+        //this.listaDeCampus = new Arraylist<>();
     }
     
     public void salvar(){
-        /*System.out.println("Campus nome: "+this.campusNome+
-                " - Estado e Cidade Id´s: " + this.campusEstadoId +
-                " - " + this.campusCidadeId);
-                */
+
         this.campusRepository.salvar(this.campusModel);
+        //this.cidadeRepository.salvar(this.cidadeModel);
     }
     
     public List<SelectItem> getEstados() {
@@ -53,12 +56,42 @@ public class campusController {
         return itens;
     }
     
-    public List<SelectItem> getCidades() {
+    public void onChangeEstado() {
+        this.listaDeCidades = this.getCidades(this.campusModel.getCampusEstadoId());
+    }
+
+    public estadoRepository getEstadoRepository() {
+        return estadoRepository;
+    }
+
+    public void setEstadoRepository(estadoRepository estadoRepository) {
+        this.estadoRepository = estadoRepository;
+    }
+
+    public cidadeRepository getCidadeRepository() {
+        return cidadeRepository;
+    }
+
+    public void setCidadeRepository(cidadeRepository cidadeRepository) {
+        this.cidadeRepository = cidadeRepository;
+    }
+
+    public List<SelectItem> getListaDeCidades() {
+        return listaDeCidades;
+    }
+
+    public void setListaDeCidades(List<SelectItem> listaDeCidades) {
+        this.listaDeCidades = listaDeCidades;
+    }
+
+    
+    public List<SelectItem> getCidades(long idEstado) {
         ArrayList<SelectItem> itens = new ArrayList<SelectItem>();
-        itens.add(new SelectItem(1, "Cidade 1"));
-        itens.add(new SelectItem(2, "Cidade 2"));
-        itens.add(new SelectItem(3, "Cidade 3"));
-        return itens;
+        List<cidadeModel> listaDeCidades = this.cidadeRepository.buscar(idEstado);
+        for (cidadeModel cidade : listaDeCidades) {
+            itens.add(new SelectItem(cidade.getIdCidade(), cidade.getCidadeNome()));
+        }
+            return itens;
     }
 
     public campusModel getCampusModel() {
